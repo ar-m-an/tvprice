@@ -234,3 +234,4 @@ ENV/
 
 # Extra
 assets/bundle/
+.idea/
