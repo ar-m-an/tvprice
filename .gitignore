@@ -233,5 +233,5 @@ ENV/
 # End of https://www.gitignore.io/api/node,django,python,intellij
 
 # Extra
-assets/bundle/
+assets/bundles/
 .idea/

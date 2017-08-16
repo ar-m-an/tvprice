@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import Layout from './components/Layout/Layout';
 
 
 class App extends React.Component {
     render() {
         return (
             <div>
-                <h1>Hello Django + React</h1>
+                <Layout/>
             </div>
         );
     }
