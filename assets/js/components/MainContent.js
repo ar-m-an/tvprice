@@ -15,17 +15,17 @@ export default class MainContent extends React.Component {
         });
 
         return (
-            <div className="main-container">
-                <Paper className="mui-paper">
-                    Main Content
+            <div className="main-container" dir="rtl">
+                <div className="card-panel">
+                    <h5>محصولات</h5>
                     <hr/>
-                    <div className="products-container">
+                    <div className="products-container row">
                         {products}
                     </div>
-                    <div className="pagination">
+                    <div className="pagination center-align" dir="ltr">
                         <Pagination current={this.props.page} total={this.props.numPages} display={5}/>
                     </div>
-                </Paper>
+                </div>
             </div>
         );
     }

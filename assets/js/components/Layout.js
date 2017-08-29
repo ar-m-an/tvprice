@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import MainContent from  './MainContent';
+import Footer from './Footer';
+
 import $ from 'jquery';
 
 require('../../stylesheets/main.scss');
@@ -35,14 +37,14 @@ export default class Layout extends React.Component {
         // }];
         $.ajax({
             url: 'http://127.0.0.1:8000/api/products/',
-            dataType:'json',
+            dataType: 'json',
             cache: false,
-            success: function(data){
-                this.setState({products: data}, function(){
+            success: function (data) {
+                this.setState({products: data}, function () {
                     console.log(this.state);
                 });
             }.bind(this),
-            error: function(xhr, status, err){
+            error: function (xhr, status, err) {
                 console.log(err);
             }
         });
@@ -57,15 +59,17 @@ export default class Layout extends React.Component {
             <div className="layout-container">
                 <Header/>
                 <div className="row">
-                    <div className=" main-contetnt col-sm-9">
+                    <div className=" main-contetnt col s9">
                         <MainContent products={this.state.products} numPages={10} page={1}/>
                     </div>
-                    <div className=" sidebar col-sm-3">
+                    <div className=" sidebar col s3">
                         <Sidebar updatedFilters={this.updateFilter.bind(this)}/>
                     </div>
 
                 </div>
+                <Footer/>
             </div>
+
         );
     }
 }

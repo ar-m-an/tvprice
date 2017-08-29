@@ -11,6 +11,7 @@ export default class Header extends React.Component {
     render() {
         return (
             <div className="header-container">
+
                 <AppBar
                     title="TV Price"
                     iconClassNameRight="muidocs-icon-navigation-expand-more"
