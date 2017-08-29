@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Paper from 'material-ui/Paper';
 import ProductCard from './ProductCard';
 import Pagination from 'material-ui-pagination';
 
@@ -23,7 +22,7 @@ export default class MainContent extends React.Component {
                         {products}
                     </div>
                     <div className="pagination center-align" dir="ltr">
-                        <Pagination current={this.props.page} total={this.props.numPages} display={5}/>
+                        {/*<Pagination current={this.props.page} total={this.props.numPages} display={5}/>*/}
                     </div>
                 </div>
             </div>

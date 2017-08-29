@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Paper from 'material-ui/Paper';
 
 
 require('../../stylesheets/components/product_card.scss');
@@ -24,7 +23,7 @@ export default class ProductCard extends React.Component {
                     <div className="card-action left-align">
                         <a className='activator'>
                             <i className="material-icons right">more_vert</i>
-          g              </a>
+                        </a>
                         <a href={this.props.product.url} target="_blank" className="btn ">خرید</a>
                     </div>
                     <div className="card-reveal">

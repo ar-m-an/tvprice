@@ -59,10 +59,10 @@ export default class Layout extends React.Component {
             <div className="layout-container">
                 <Header/>
                 <div className="row">
-                    <div className=" main-contetnt col s9">
+                    <div className=" main-contetnt col s12 m9 l9">
                         <MainContent products={this.state.products} numPages={10} page={1}/>
                     </div>
-                    <div className=" sidebar col s3">
+                    <div className=" sidebar col s12 m3 l3">
                         <Sidebar updatedFilters={this.updateFilter.bind(this)}/>
                     </div>
 

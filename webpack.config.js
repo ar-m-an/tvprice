@@ -10,7 +10,6 @@ entry: './assets/js/index.js',
 output: {
     path: path.resolve('./assets/bundles/'),
     filename: "[name]-[hash].js",
-    publicPath: '/fonts'
 },
 
 plugins: [
@@ -21,7 +20,7 @@ module: {
     loaders: [
     { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
     { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ },
-    { test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader', options: { url: false } },
+    { test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader' },
     {
         test: /\.(woff2|woff|ttf|eot|svg|otf)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loaders: ["url-loader?limit=50000&name=fonts/[name].[ext]"]
