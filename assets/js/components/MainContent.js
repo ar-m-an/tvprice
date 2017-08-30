@@ -16,8 +16,9 @@ export default class MainContent extends React.Component {
         return (
             <div className="main-container" dir="rtl">
                 <div className="card-panel">
-                    <h5>محصولات</h5>
-                    <hr/>
+                    <div className="products-title">
+                        <h5>محصولات</h5>
+                    </div>
                     <div className="products-container row">
                         {products}
                     </div>

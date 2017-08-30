@@ -2,7 +2,12 @@
   display: inline-block;
   padding: 5px;
 
-  img {
-    width: 100%;
+  .card-image img{
+    position: absolute !important;
+  }
+  .card-image:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
   }
 }

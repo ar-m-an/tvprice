@@ -10,11 +10,13 @@ export default class ProductCard extends React.Component {
             <div className="product-card col s12 m6 l3">
                 <div className="card hoverable ">
                     <div className="card-image">
-                        <img src={this.props.product.image}/>
-
+                        <div className="card-image-container">
+                            <div className="aspect-ratio-1-1"></div>
+                            <img src={this.props.product.image}/>
+                        </div>
                     </div>
                     <div className="card-content">
-                        <span className="">
+                        <span className="truncate">
                             <strong>{this.props.product.title}</strong>
                         </span>
                         <p>{this.props.product.price} تومان</p>
@@ -27,8 +29,11 @@ export default class ProductCard extends React.Component {
                         <a href={this.props.product.url} target="_blank" className="btn ">خرید</a>
                     </div>
                     <div className="card-reveal">
-                        <a className="card-title grey-text text-darken-4">Card Title<i className="material-icons right">close</i></a>
-                        <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                        <a className="card-title grey-text text-darken-4">مشخصات<i className="material-icons right">close</i></a>
+                        <p>{this.props.product.title}</p>
+                        <p>برند: {this.props.product.brand}</p>
+                        <p>اندازه: {this.props.product.size} اینچ</p>
+                        <p>فروشنده: {this.props.product.vendor}</p>
                     </div>
                 </div>
             </div>
