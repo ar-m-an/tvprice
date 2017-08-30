@@ -12,6 +12,14 @@ export default class Layout extends React.Component {
     constructor() {
         super();
         this.state = {products: []};
+
+        this.filterProps = {
+            minPrice: 0,
+            maxPrice: 30000000,
+            minSize: 29,
+            maxSize: 78,
+            brands: ['SAMSUNG', 'LG', 'SONY', 'PANASONIC', 'PHILIPS']
+        }
     }
 
     componentWillMount() {
@@ -51,10 +59,11 @@ export default class Layout extends React.Component {
     }
 
     updateFilter(filters) {
-
+        console.log(filters)
     }
 
     render() {
+
         return (
             <div className="layout-container">
                 <Header/>
@@ -63,7 +72,7 @@ export default class Layout extends React.Component {
                         <MainContent products={this.state.products} numPages={10} page={1}/>
                     </div>
                     <div className=" sidebar col s12 m3 l3">
-                        <Sidebar updatedFilters={this.updateFilter.bind(this)}/>
+                        <Sidebar updatedFilters={this.updateFilter.bind(this)} filterData={this.filterProps}/>
                     </div>
 
                 </div>
