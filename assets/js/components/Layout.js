@@ -3,6 +3,7 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import MainContent from  './MainContent';
 import Footer from './Footer';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import $ from 'jquery';
 
@@ -11,7 +12,13 @@ require('../../stylesheets/main.scss');
 export default class Layout extends React.Component {
     constructor() {
         super();
-        this.state = {products: []};
+        this.state = {
+            products: [],
+            filterValues: {},
+            totalPages: 10,
+            currentPage: 1,
+            productPerPage: 20
+        };
 
         this.filterProps = {
             minPrice: 0,
@@ -48,8 +55,13 @@ export default class Layout extends React.Component {
             dataType: 'json',
             cache: false,
             success: function (data) {
-                this.setState({products: data}, function () {
-                    console.log(this.state);
+                this.setState(
+                    {
+                        products: data.products,
+                        totalPages: parseInt(data.totalProducts / this.state.productPerPage + 1)
+                    },
+                    function () {
+                        console.log(this.state);
                 });
             }.bind(this),
             error: function (xhr, status, err) {
@@ -59,17 +71,61 @@ export default class Layout extends React.Component {
     }
 
     updateFilter(filters) {
+        this.setState({filterValues: filters})
+        $.ajax({
+            url: 'http://127.0.0.1:8000/api/filter/',
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                this.setState({products: data.products}, function () {
+                    console.log(this.state);
+                });
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.log(err);
+            }
+        });
         console.log(filters)
     }
 
+    paginationUpdate(page) {
+        this.setState({currentPage: page});
+
+        $.ajax({
+            url: 'http://127.0.0.1:8000/api/products/',
+            dataType: 'json',
+            cache: false,
+            data: {
+                page: page,
+                productPerPage: this.state.productPerPage
+            },
+            success: function (data) {
+                this.setState(
+                    {
+                        products: data.products,
+                        totalPages: parseInt(data.totalProducts / this.state.productPerPage + 1)
+                    },
+                    function () {
+                        console.log(this.state);
+                    });
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.log(err);
+            }
+        });
+    }
     render() {
 
         return (
+            <MuiThemeProvider>
             <div className="layout-container">
                 <Header/>
                 <div className="row">
                     <div className=" main-contetnt col s12 m9 l9">
-                        <MainContent products={this.state.products} numPages={10} page={1}/>
+                        <MainContent products={this.state.products}
+                                     totalPages={this.state.totalPages}
+                                     currentPage={this.state.currentPage}
+                                     paginationUpdate={this.paginationUpdate.bind(this)}/>
                     </div>
                     <div className=" sidebar col s12 m3 l3">
                         <Sidebar updatedFilters={this.updateFilter.bind(this)} filterData={this.filterProps}/>
@@ -78,6 +134,7 @@ export default class Layout extends React.Component {
                 </div>
                 <Footer/>
             </div>
+            </MuiThemeProvider>
 
         );
     }

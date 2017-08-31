@@ -29,6 +29,7 @@
   "dependencies": {
     "materialize-css": "^0.100.2",
     "react-nouislider": "^2.0.0",
+    "react-ultimate-pagination-material-ui": "^1.0.3",
     "rheostat": "^2.1.1"
   }
 }

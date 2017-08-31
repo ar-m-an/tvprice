@@ -1,12 +1,16 @@
 import React, {Component} from 'react';
 import ProductCard from './ProductCard';
-import Pagination from 'material-ui-pagination';
+import UltimatePaginationMaterialUi from 'react-ultimate-pagination-material-ui';
 
 require('../../stylesheets/components/main_content.scss');
 
 
 export default class MainContent extends React.Component {
 
+    onPageChange(page) {
+        this.props.paginationUpdate(page);
+        console.log(page)
+    }
 
     render() {
         let products = this.props.products.map(product => {
@@ -23,7 +27,9 @@ export default class MainContent extends React.Component {
                         {products}
                     </div>
                     <div className="pagination center-align" dir="ltr">
-                        {/*<Pagination current={this.props.page} total={this.props.numPages} display={5}/>*/}
+                        <UltimatePaginationMaterialUi   currentPage={this.props.currentPage}
+                                                        totalPages={this.props.totalPages}
+                                                        onChange={this.onPageChange.bind(this)} />
                     </div>
                 </div>
             </div>

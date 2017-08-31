@@ -19,6 +19,17 @@ class ProductList(APIView):
         # products = Product.objects.all()
         # serializer = ProductSerializer(products, many=True)
         # return Response(serializer.data)
+
+        page = int(request.GET.get('page', '1'))
+        product_per_page = int(request.GET.get('productPerPage', '20'))
+
         es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
-        data = es.search(index='test2', doc_type='product')
-        return JsonResponse([hit['_source'] for hit in data['hits']['hits']], safe=False) #[hit['source'] for hit in data['_hits']['hits']])
+        data = es.search(index='test2', doc_type='product', body={
+            'from': (page - 1) * product_per_page,
+            'size': product_per_page
+        })
+        product_data = {
+            'products': [hit['_source'] for hit in data['hits']['hits']],
+            'totalProducts': data['hits']['total']
+        }
+        return JsonResponse(product_data, safe=False) #[hit['source'] for hit in data['_hits']['hits']])
