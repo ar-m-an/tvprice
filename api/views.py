@@ -7,29 +7,51 @@ from inventory.models import Product
 from elasticsearch import Elasticsearch
 from django.http import JsonResponse
 
+
 def index(request):
     return render(request, 'api/index.html', {})
 
 
-class ProductList(APIView):
+def get_products(request):
+    # Parse Pagination Parameters
+    page = int(request.GET.get('page', '1'))
+    product_per_page = int(request.GET.get('productPerPage', '20'))
 
-    # renderer_classes = (JSONRenderer,)
+    # Parse Filter Data from GET Parameters
+    filters = [{}]
+    brands = request.GET.getlist('selectedBrands[]')
+    min_price = request.GET.get('minPrice')
+    max_price = request.GET.get('maxPrice')
+    min_size = request.GET.get('minSize')
+    max_size = request.GET.get('maxSize')
+    port = request.GET.get('port', 'all')
 
-    def get(self, request):
-        # products = Product.objects.all()
-        # serializer = ProductSerializer(products, many=True)
-        # return Response(serializer.data)
+    if brands:
+        filters.append({'terms': {'brand': [brand.lower() for brand in brands]}})
+    if min_size:
+        filters.append({'range': {'size': {"gte": int(min_size), "lte": int(max_size)}}})
+    if min_price:
+        filters.append({'range': {'price': {"gte": int(min_price), "lte": int(max_price)}}})
+    if port != 'all':
+        filters.append({'term': {'port': port}})
 
-        page = int(request.GET.get('page', '1'))
-        product_per_page = int(request.GET.get('productPerPage', '20'))
+    # Send Query to ElasticSearch
+    es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+    data = es.search(index='test2', doc_type='product', body={
+        'from': (page - 1) * product_per_page,
+        'size': product_per_page,
 
-        es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
-        data = es.search(index='test2', doc_type='product', body={
-            'from': (page - 1) * product_per_page,
-            'size': product_per_page
-        })
-        product_data = {
-            'products': [hit['_source'] for hit in data['hits']['hits']],
-            'totalProducts': data['hits']['total']
+        "query": {
+            "bool": {
+                "must": [{'match_all': {}}],
+                "filter": [filters]
+            }
         }
-        return JsonResponse(product_data, safe=False) #[hit['source'] for hit in data['_hits']['hits']])
+    })
+
+    product_data = {
+        'products': [hit['_source'] for hit in data['hits']['hits']],
+        'totalProducts': data['hits']['total']
+    }
+
+    return JsonResponse(product_data, safe=False)

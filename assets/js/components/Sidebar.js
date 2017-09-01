@@ -11,8 +11,10 @@ export default class Sidebar extends React.Component {
         this.state = {
             selectedBrands: [],
             availableOnly: false,
-            priceRange:[this.props.filterData.minPrice, this.props.filterData.maxPrice],
-            sizeRange: [this.props.filterData.minSize, this.props.filterData.maxSize],
+            minPrice: this.props.filterData.minPrice,
+            maxPrice: this.props.filterData.maxPrice,
+            minSize: this.props.filterData.minSize,
+            maxSize: this.props.filterData.maxSize,
             port: 'all'
         }
         this.updatePriceRange = this.updatePriceRange.bind(this);
@@ -39,13 +41,15 @@ export default class Sidebar extends React.Component {
 
     updatePriceRange(sliderState) {
         this.setState({
-            priceRange: sliderState.values,
+            minPrice: sliderState.values[0],
+            maxPrice: sliderState.values[1]
         });
     }
 
     updateSizeRange(sliderState) {
         this.setState({
-            sizeRange: sliderState.values,
+            minSize: sliderState.values[0],
+					  maxSize: sliderState.values[1],
         });
     }
 
@@ -95,10 +99,10 @@ export default class Sidebar extends React.Component {
                                     <Rheostat
                                         min={this.props.filterData.minPrice}
                                         max={this.props.filterData.maxPrice}
-                                        values={this.state.priceRange}
+                                        values={[this.state.minPrice, this.state.maxPrice]}
                                         onValuesUpdated={this.updatePriceRange.bind(this)}
                                     />
-                                    از {this.state.priceRange[0]} تا {this.state.priceRange[1]} تومان
+                                    از {this.state.minPrice} تا {this.state.maxPrice} تومان
                                     <p >
                                         <input type="checkbox" className="filled-in" id="available-products"  ref="availableOnly"/>
                                         <label htmlFor="available-products">کالاهای موجود</label>
@@ -111,17 +115,17 @@ export default class Sidebar extends React.Component {
                                     <Rheostat
                                         min={this.props.filterData.minSize}
                                         max={this.props.filterData.maxSize}
-                                        values={this.state.sizeRange}
+                                        values={[this.state.minSize, this.state.maxSize]}
                                         onValuesUpdated={this.updateSizeRange.bind(this)}
                                     />
-                                    از {this.state.sizeRange[0]} تا {this.state.sizeRange[1]} اینج
+                                    از {this.state.minSize} تا {this.state.maxSize} اینج
                                 </div>
                             </li>
                             <li>
                                 <div className="collapsible-header">رابط هوشمند</div>
                                 <div className="collapsible-body">
                                     <p>
-                                        <input type="radio" name="port" className="with-gap" id="port-all" value="all" checked={true}
+                                        <input type="radio" name="port" className="with-gap" id="port-all" value="all" defaultChecked={true}
                                                onChange={this.handlePortOptionChange.bind(this)} />
                                         <label htmlFor="port-all"> همه</label>
                                     </p>

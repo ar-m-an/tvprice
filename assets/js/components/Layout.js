@@ -30,33 +30,23 @@ export default class Layout extends React.Component {
     }
 
     componentWillMount() {
-        // this.setState({products: this.getProducts()});
-        this.getProducts();
+        this.getProducts(1, {port: 'all'});
     }
 
-    getProducts() {
-        // return [{
-        //     id: 1,
-        //     title: "تلويزيون ال اي دي هوشمند سامسونگ مدل 50KU7970 سايز 50 اينچ",
-        //     url: "https://www.digikala.com/Product/DKP-193857/%D8%AA%D9%84%D9%88%D9%8A%D8%B2%D9%8A%D9%88%D9%86-%D8%A7%D9%84-%D8%A7%D9%8A-%D8%AF%D9%8A-%D9%87%D9%88%D8%B4%D9%85%D9%86%D8%AF-%D8%A7%D9%84-%D8%AC%D9%8A-%D9%8",
-        //     price: 2334000,
-        //     image: "https://file.digi-kala.com/digikala/Image/Webstore/Product/P_193857/220/LG-43UH65200GI-Smart-LED-TV-43-Inch-99c10f.jpg",
-        //     "category": "tv"
-        // }, {
-        //     "id": 2,
-        //     "title": "تلويزيون ال اي دي هوشمند سامسونگ مدل 49K6960 سايز 49 اينچ",
-        //     "url": "https://www.digikala.com/Product/DKP-191279/%D8%AA%D9%84%D9%88%D9%8A%D8%B2%D9%8A%D9%88%D9%86-%D8%A7%D9%84-%D8%A7%D9%8A-%D8%AF%D9%8A-%D9%87%D9%88%D8%B4%D9%85%D9%86%D8%AF-%D8%B3%D8%A7%D9%85%D8%B3%D9%88%",
-        //     "price": 2600000,
-        //     "image": "https://file.digi-kala.com/digikala/Image/Webstore/Product/P_191279/220/Samsung-49K6960-Smart-LED-TV-49-Inch-2da571.jpg",
-        //     "category": "tv"
-        // }];
+    getProducts(page, filters) {
+        let ajaxData = filters;
+        ajaxData['page'] = page;
+        ajaxData['productPerPage'] = this.state.productPerPage;
+
         $.ajax({
             url: 'http://127.0.0.1:8000/api/products/',
             dataType: 'json',
             cache: false,
+            data: ajaxData,
             success: function (data) {
                 this.setState(
                     {
+                        currentPage: page,
                         products: data.products,
                         totalPages: parseInt(data.totalProducts / this.state.productPerPage + 1)
                     },
@@ -72,48 +62,15 @@ export default class Layout extends React.Component {
 
     updateFilter(filters) {
         this.setState({filterValues: filters})
-        $.ajax({
-            url: 'http://127.0.0.1:8000/api/filter/',
-            dataType: 'json',
-            cache: false,
-            success: function (data) {
-                this.setState({products: data.products}, function () {
-                    console.log(this.state);
-                });
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.log(err);
-            }
-        });
-        console.log(filters)
+        this.getProducts(1, filters);
+        console.log(filters);
     }
 
     paginationUpdate(page) {
         this.setState({currentPage: page});
-
-        $.ajax({
-            url: 'http://127.0.0.1:8000/api/products/',
-            dataType: 'json',
-            cache: false,
-            data: {
-                page: page,
-                productPerPage: this.state.productPerPage
-            },
-            success: function (data) {
-                this.setState(
-                    {
-                        products: data.products,
-                        totalPages: parseInt(data.totalProducts / this.state.productPerPage + 1)
-                    },
-                    function () {
-                        console.log(this.state);
-                    });
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.log(err);
-            }
-        });
+        this.getProducts(page, this.state.filterValues);
     }
+
     render() {
 
         return (
