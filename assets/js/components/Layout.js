@@ -39,7 +39,7 @@ export default class Layout extends React.Component {
         ajaxData['productPerPage'] = this.state.productPerPage;
 
         $.ajax({
-            url: 'http://127.0.0.1:8000/api/products/',
+            url: '/api/products/',
             dataType: 'json',
             cache: false,
             data: ajaxData,
