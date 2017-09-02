@@ -1,12 +1,7 @@
 from django.shortcuts import render
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.renderers import JSONRenderer
-from api.serializers import ProductSerializer
-from inventory.models import Product
 from elasticsearch import Elasticsearch
 from django.http import JsonResponse
-
+import certifi
 
 def index(request):
     return render(request, 'api/index.html', {})
@@ -36,7 +31,14 @@ def get_products(request):
         filters.append({'term': {'port': port}})
 
     # Send Query to ElasticSearch
-    es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+    es = Elasticsearch(
+        ["https://8769418f30f93ada7d1a1d64a0e88683.eu-west-1.aws.found.io/"],
+        port=9243,
+        http_auth="elastic:ZiYmDPty1GVCLnkHrI14ixLb",
+        use_ssl=True,
+        verify_certs=True,
+        ca_certs=certifi.where())
+
     data = es.search(index='test2', doc_type='product', body={
         'from': (page - 1) * product_per_page,
         'size': product_per_page,
