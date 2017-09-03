@@ -16,17 +16,19 @@ class AbstractCrawler(metaclass=ABCMeta):
 
         try:
             driver_path = './chromedriver.exe'
-            self.driver = webdriver.Chrome(executable_path=driver_path, chrome_options=chrome_options)
+            driver = webdriver.Chrome(executable_path=driver_path, chrome_options=chrome_options)
         except:
             print('<CRAWLER> - UNABLE TO CREATE CHROME DRIVER.')
+            return None
 
         print('<CRAWLER> - SELENIUM DRIVER STARTED SUCCESSFULLY.')
+        return driver
 
     def get_pagination_urls(self):
         pass
 
-    def get_product_listings(self):
+    def get_product_listings(self, list_page):
         pass
 
-    def get_single_product(self):
+    def get_single_product(self, product):
         pass
